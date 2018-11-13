@@ -14,7 +14,7 @@ pipeline {
         stage('Git-Release') {
             steps {
               withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'github-api-personal', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                  sh 'echo user:$USERNAME token:$PASSWORD'
+                  sh 'echo user:$USERNAME token:$PASSWORD > text.txt'
               }
             }
         }
