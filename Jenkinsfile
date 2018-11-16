@@ -25,6 +25,12 @@ pipeline {
               }
             }
         }
+        stage('Deliver') {
+            steps {
+                sh '/var/jenkins_home/workspace/simple-java-maven-app/jenkins/scripts/deliver.sh'
+            }
+        }
+    }
        
     }
 }
