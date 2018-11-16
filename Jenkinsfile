@@ -11,7 +11,7 @@ pipeline {
         stage('Git-Release') {
             steps {
               withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'github-api-personal', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                  sh './jenkins/scripts/create-github-release-with-asset.sh user:$USERNAME token:$PASSWORD'
+                  sh '/var/jenkins_home/workspace/simple-java-maven-app/jenkins/scripts/create-github-release-with-asset.sh user:$USERNAME token:$PASSWORD'
               }
             }
         }
