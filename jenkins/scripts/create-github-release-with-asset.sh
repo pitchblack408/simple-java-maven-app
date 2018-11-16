@@ -44,8 +44,8 @@ echo "Description=$DESC"
 echo "here-> $USER:$TOKEN"
 RESULT1=$(curl -X POST --trace-ascii dump1.txt --user "$USER:$TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" --data "{\"tag_name\":\"$TAG_NAME\",  \"target_commitish\":\"master\", \"name\":\"$NAME\", \"body\":\"$DESC\", \"draft\":false, \"prerelease\": false}" https://$HOST/repos/$REPO_OWNER/$REPO/releases)
 echo $RESULT1
-#RELEASE_ID=$(echo $RESULT1 | jq '.id')
-#echo $RELEASE_ID
+RELEASE_ID=$(echo $RESULT1 | jq '.id')
+echo $RELEASE_ID
 #echo "Uploading asset... "
 #GH_ASSET="https://uploads.github.com/repos/$REPO_OWNER/$REPO/releases/$RELEASE_ID/assets?name=$(basename $FILE_NAME)"
 #RESULT2=$(curl --trace-ascii dump2.txt --user "$USER:$TOKEN"  -H "Content-Type: application/jar" --data-binary @"$FILE_NAME" $GH_ASSET)
