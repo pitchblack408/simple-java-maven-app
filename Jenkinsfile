@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                sh '/var/jenkins_home/workspace/simple-java-maven-app/jenkins/scripts/deliver.sh'
+                sh 'mvn jar:jar install:install help:evaluate -Dexpression=project.name'
             }
         }
     }
