@@ -35,18 +35,17 @@ REPO="simple-java-maven-app"
 POM_DIR="/var/jenkins_home/workspace/simple-java-maven-app/"
 ARTIFACT_ID=$(cd $POM_DIR && mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.artifactId|grep -Ev '(^\[|Download\w+:)')
 TAG_NAME=$(cd $POM_DIR && mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version|grep -Ev '(^\[|Download\w+:)')
-FINAL_NAME="$ARTIFACT_ID-$TAG_NAME"
+FINAL_NAME="$ARTIFACT_ID-$TAG_NAME.jar"
 FILE_NAME="/var/jenkins_home/workspace/simple-java-maven-app/target/$FINAL_NAME"
 NAME=$TAG_NAME
 DESC=$(cd $POM_DIR && mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.description|grep -Ev '(^\[|Download\w+:)')
 echo "Trying to create git release tag_name:name=$TAG_NAME:$NAME"
 echo "Description=$DESC"
-echo "here-> $USER:$TOKEN"
 RESULT1=$(curl --trace-ascii dump1.txt --user "$USER:$TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" --data "{\"tag_name\":\"$TAG_NAME\",  \"target_commitish\":\"master\", \"name\":\"$NAME\", \"body\":\"$DESC\", \"draft\":false, \"prerelease\": false}" https://$HOST/repos/$REPO_OWNER/$REPO/releases)
 echo $RESULT1
 RELEASE_ID=$(echo $RESULT1 | jq '.id')
 echo "Uploading asset with release id: $RELEASE_ID"
 echo "Filename: $FILE_NAME"
 GH_ASSET="https://uploads.github.com/repos/$REPO_OWNER/$REPO/releases/$RELEASE_ID/assets?name=$(basename $FILE_NAME)"
-#RESULT2=$(curl --trace-ascii dump2.txt --user "$USER:$TOKEN"  -H "Content-Type: application/jar" --data-binary @"$FILE_NAME" $GH_ASSET)
-#echo $RESULT2
+RESULT2=$(curl --trace-ascii dump2.txt --user "$USER:$TOKEN"  -H "Content-Type: application/jar" --data-binary @"$FILE_NAME" $GH_ASSET)
+echo $RESULT2
